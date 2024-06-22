@@ -1,4 +1,7 @@
 import random
+import tkinter as tk
+from tkinter import ttk
+from tkinter import scrolledtext
 
 # Lists with expanded phrases
 sentence_starters = [
@@ -67,5 +70,41 @@ def generate_story():
     
     return story
 
-# Generate and print a random story
-print(generate_story())
+# Function to update the story in the text area
+def display_story():
+    story = generate_story()
+    story_text.config(state=tk.NORMAL)
+    story_text.delete(1.0, tk.END)
+    story_text.insert(tk.INSERT, story)
+    story_text.config(state=tk.DISABLED)
+
+# Creating the main window
+root = tk.Tk()
+root.title("Random Story Generator")
+root.geometry("700x500")
+root.configure(bg="#2c3e50")
+
+style = ttk.Style()
+style.configure("TButton", font=("Helvetica", 12, "bold"), background="#e67e22", foreground="#ecf0f1", padding=10)
+style.configure("TLabel", font=("Helvetica", 16, "bold"), background="#2c3e50", foreground="#ecf0f1")
+style.configure("TFrame", background="#2c3e50")
+
+# Adding a frame for content
+frame = ttk.Frame(root, padding="20")
+frame.pack(expand=True, fill=tk.BOTH)
+
+# Adding a title label
+title_label = ttk.Label(frame, text="Welcome to the Random Story Generator")
+title_label.pack(pady=10)
+
+# Adding the story display area
+story_text = scrolledtext.ScrolledText(frame, wrap=tk.WORD, width=80, height=15, font=("Helvetica", 12))
+story_text.pack(pady=10)
+story_text.config(state=tk.DISABLED, background="#34495e", foreground="#ecf0f1", insertbackground="#ecf0f1")
+
+# Adding a button to generate a new story
+generate_button = ttk.Button(frame, text="Generate Story", command=display_story)
+generate_button.pack(pady=20)
+
+# Run the application
+root.mainloop()
